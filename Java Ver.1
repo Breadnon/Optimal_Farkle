@@ -1,0 +1,49 @@
+// tip: each public class is put in its own file
+import java.util.Arrays;
+public class main
+{
+    // tip: arguments are passed via the field below this editor
+    public static void main(String[] args)
+    {
+        int firstDie = 1;
+        int secondDie = 1;
+        int thirdDie = 1;
+        int fourthDie = 1;
+        int fifthDie = 1;
+        int sixthDie = 1;
+        int[] roll = {firstDie, secondDie, thirdDie, fourthDie, fifthDie, sixthDie};
+        while(!(roll[0]==6 && roll[1]==6 && roll[2]==6 && roll[3]==6 && roll[4]==6 && roll[5]==6)){
+            System.out.println(Arrays.toString(roll));
+            roll = incrementRoll(roll);
+        }
+    }
+
+    public static int incrementDie(int die){
+        die += 1;
+        if(die == 7){
+            die = 1;
+        }
+        return die;
+    }
+
+    public static int[] incrementRoll(int[] roll){
+        int lastDie = roll[roll.length-1];
+        lastDie = incrementDie(lastDie);
+        roll[roll.length-1] = lastDie;
+        if(lastDie == 1){
+            int[] smallerRoll = Arrays.copyOf(roll, roll.length-1);
+            for(int i = 0; i < smallerRoll.length; i++){
+                smallerRoll[i] = roll[i];
+            }
+            smallerRoll = incrementRoll(smallerRoll);
+            for(int i = 0; i<smallerRoll.length; i++){
+                roll[i]=smallerRoll[i];
+            }
+        }
+        return roll;
+    }
+
+    public static int rollValue(int[] roll){
+        return 0;
+    }
+}
