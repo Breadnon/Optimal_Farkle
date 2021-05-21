@@ -1,21 +1,26 @@
-// tip: each public class is put in its own file
 import java.util.Arrays;
+import java.util.List;
 public class main
 {
     // tip: arguments are passed via the field below this editor
     public static void main(String[] args)
     {
+        int iterations = (6*6*6*6*6*6);
         int firstDie = 1;
         int secondDie = 1;
         int thirdDie = 1;
         int fourthDie = 1;
         int fifthDie = 1;
         int sixthDie = 1;
+        int avgPoints = 0;
         int[] roll = {firstDie, secondDie, thirdDie, fourthDie, fifthDie, sixthDie};
-        while(!(roll[0]==6 && roll[1]==6 && roll[2]==6 && roll[3]==6 && roll[4]==6 && roll[5]==6)){
-            System.out.println(Arrays.toString(roll));
+        for(int i = 0; i < iterations; i++){
+            avgPoints += rollValue(roll);
             roll = incrementRoll(roll);
         }
+        System.out.println(roll);
+        System.out.println(avgPoints);
+        
     }
 
     public static int incrementDie(int die){
@@ -44,6 +49,59 @@ public class main
     }
 
     public static int rollValue(int[] roll){
-        return 0;
+        int rollValue = 0;
+        int[] faces = {0,0,0,0,0,0};
+        for(int i = 0; i < roll.length; i++){
+            if(roll[i] == 1){
+                faces[0] += 1;
+            }
+            if(roll[i] == 2){
+                faces[1] += 1;
+            }
+            if(roll[i] == 3){
+                faces[2] += 1;
+            }
+            if(roll[i] == 4){
+                faces[3] += 1;
+            }
+            if(roll[i] == 5){
+                faces[4] += 1;
+            }
+            if(roll[i] == 6){
+                faces[5] += 1;
+            }
+        }
+        for(int i = 0; i < faces.length; i++){
+            if(faces[i] == 5){
+                rollValue += 2000;
+            }
+            if(faces[i] == 4){
+                rollValue += 1000;
+                if(i != 0 || i != 4){
+                    rollValue += (faces[0]*100 + faces[4] * 50);
+                }
+            }
+            if(faces[i] == 3 && (Arrays.asList(faces.copyOfRange(faces, i+1, faces.length+6)).indexOf(3)) == -1){
+                if(i == 0){
+                    rollValue += 300;
+                } else if (i == 1){
+                    rollValue += 200;
+                } else if (i == 2){
+                    rollValue += 300;
+                } else if (i == 3){
+                    rollValue += 400;
+                } else if (i == 4){
+                    rollValue += 500;
+                } else if (i == 5){
+                    rollValue += 600;
+                }
+                if(i != 0 || i != 4){
+                    rollValue += (faces[0]*100 + faces[4] * 50);
+                }
+            } else {
+                rollValue += (faces[0]*100 + faces[4] * 50);
+            }
+            return rollValue;
+        }
     }
 }
